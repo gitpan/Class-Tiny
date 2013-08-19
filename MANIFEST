@@ -16,11 +16,13 @@ t/baker.t
 t/charlie.t
 t/delta.t
 t/echo.t
+t/foxtrot.t
 t/lib/Alfa.pm
 t/lib/Baker.pm
 t/lib/Charlie.pm
 t/lib/Delta.pm
 t/lib/Echo.pm
+t/lib/Foxtrot.pm
 t/lib/TestUtils.pm
 tidyall.ini
 xt/author/critic.t

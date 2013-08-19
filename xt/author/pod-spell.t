@@ -19,6 +19,9 @@ ether
 Olivier
 Mengué
 dolmen
+Toby
+Inkster
+mail
 lib
 Class
 Tiny

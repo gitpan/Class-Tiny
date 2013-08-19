@@ -4,7 +4,7 @@ use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.002'; # VERSION
+our $VERSION = '0.003'; # VERSION
 
 use Carp ();
 
@@ -27,12 +27,11 @@ sub import {
         defined and !ref and /^[^\W\d]\w*$/s
           or Carp::croak "Invalid accessor name '$_'"
     } @_;
-    $CLASS_ATTRIBUTES{$pkg} = { map { $_ => undef } @attr };
-    my $child = !!@{"${pkg}::ISA"};
+    $CLASS_ATTRIBUTES{$pkg}{$_} = undef for @attr;
+    @{"${pkg}::ISA"} = $class unless @{"${pkg}::ISA"};
     #<<< No perltidy
     eval join "\n", ## no critic: intentionally eval'ing subs here
       "package $pkg;",
-      ( $child ? () : "\@${pkg}::ISA = 'Class::Tiny';" ),
       map {
         "sub $_ { return \@_ == 1 ? \$_[0]->{$_} : (\$_[0]->{$_} = \$_[1]) }\n"
       } grep { ! *{"$pkg\::$_"}{CODE} } @attr;
@@ -117,7 +116,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -349,6 +348,10 @@ Karen Etheridge <ether@cpan.org>
 =item *
 
 Olivier Mengué <dolmen@cpan.org>
+
+=item *
+
+Toby Inkster <mail@tobyinkster.co.uk>
 
 =back
 
