@@ -33,7 +33,7 @@ no_index:
 provides:
   Class::Tiny:
     file: lib/Class/Tiny.pm
-    version: 0.001
+    version: 0.002
 requires:
   Carp: 0
   perl: 5.008001
@@ -43,5 +43,8 @@ resources:
   bugtracker: https://github.com/dagolden/class-tiny/issues
   homepage: https://metacpan.org/release/Class-Tiny
   repository: git://github.com/dagolden/class-tiny.git
-version: 0.001
+version: 0.002
 x_authority: cpan:DAGOLDEN
+x_contributors:
+  - 'Karen Etheridge <ether@cpan.org>'
+  - 'Olivier Mengué <dolmen@cpan.org>'

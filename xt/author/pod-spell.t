@@ -13,6 +13,12 @@ destructor
 David
 Golden
 dagolden
+Karen
+Etheridge
+ether
+Olivier
+Mengué
+dolmen
 lib
 Class
 Tiny

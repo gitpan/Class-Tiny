@@ -4,7 +4,7 @@ use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 use Carp ();
 
@@ -27,7 +27,7 @@ sub import {
         defined and !ref and /^[^\W\d]\w*$/s
           or Carp::croak "Invalid accessor name '$_'"
     } @_;
-    $CLASS_ATTRIBUTES{$pkg} = { map { $_ => 1 } @attr };
+    $CLASS_ATTRIBUTES{$pkg} = { map { $_ => undef } @attr };
     my $child = !!@{"${pkg}::ISA"};
     #<<< No perltidy
     eval join "\n", ## no critic: intentionally eval'ing subs here
@@ -65,7 +65,7 @@ sub new {
     my @search = @{ mro::get_linear_isa($class) };
     for my $k ( keys %$args ) {
         push @bad, $k
-          unless grep { $CLASS_ATTRIBUTES{$_}{$k} } @search;
+          unless grep { exists $CLASS_ATTRIBUTES{$_}{$k} } @search;
     }
     if (@bad) {
         Carp::croak("Invalid attributes for $class: @bad");
@@ -117,7 +117,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -337,6 +337,20 @@ L<https://github.com/dagolden/class-tiny>
 =head1 AUTHOR
 
 David Golden <dagolden@cpan.org>
+
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Olivier Mengué <dolmen@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 
