@@ -20,23 +20,21 @@ my %WriteMakefileArgs = (
   "LICENSE" => "apache",
   "NAME" => "Class::Tiny",
   "PREREQ_PM" => {
-    "Carp" => "0",
-    "strict" => "0",
-    "warnings" => "0"
+    "Carp" => 0,
+    "strict" => 0,
+    "warnings" => 0
   },
   "TEST_REQUIRES" => {
-    "Exporter" => "0",
-    "ExtUtils::MakeMaker" => "0",
-    "File::Find" => "0",
-    "File::Spec::Functions" => "0",
-    "File::Temp" => "0",
-    "List::Util" => "0",
+    "Exporter" => 0,
+    "ExtUtils::MakeMaker" => 0,
+    "File::Spec::Functions" => 0,
+    "List::Util" => 0,
     "Test::More" => "0.96",
-    "base" => "0",
-    "lib" => "0",
-    "subs" => "0"
+    "base" => 0,
+    "lib" => 0,
+    "subs" => 0
   },
-  "VERSION" => "0.003",
+  "VERSION" => "0.004",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -76,6 +74,13 @@ if ($] < 5.010) {
     $WriteMakefileArgs{PREREQ_PM} = {
         %{ $WriteMakefileArgs{PREREQ_PM} },
         "MRO::Compat" => "0",
+    };
+}
+
+if ($] < 5.014) {
+    $WriteMakefileArgs{PREREQ_PM} = {
+        %{ $WriteMakefileArgs{PREREQ_PM} },
+        "Devel::GlobalDestruction" => "0",
     };
 }
 

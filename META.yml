@@ -5,9 +5,7 @@ author:
 build_requires:
   Exporter: 0
   ExtUtils::MakeMaker: 0
-  File::Find: 0
   File::Spec::Functions: 0
-  File::Temp: 0
   List::Util: 0
   Test::More: 0.96
   base: 0
@@ -33,7 +31,10 @@ no_index:
 provides:
   Class::Tiny:
     file: lib/Class/Tiny.pm
-    version: 0.003
+    version: 0.004
+  Class::Tiny::Object:
+    file: lib/Class/Tiny.pm
+    version: 0.004
 requires:
   Carp: 0
   perl: 5.008001
@@ -43,9 +44,10 @@ resources:
   bugtracker: https://github.com/dagolden/class-tiny/issues
   homepage: https://metacpan.org/release/Class-Tiny
   repository: git://github.com/dagolden/class-tiny.git
-version: 0.003
+version: 0.004
 x_authority: cpan:DAGOLDEN
 x_contributors:
   - 'Karen Etheridge <ether@cpan.org>'
+  - 'Matt S Trout <mstrout@cpan.org>'
   - 'Olivier Mengué <dolmen@cpan.org>'
-  - 'Toby Inkster <mail@tobyinkster.co.uk>'
+  - 'Toby Inkster <inkster@cpan.org>'

@@ -16,12 +16,15 @@ dagolden
 Karen
 Etheridge
 ether
+Matt
+Trout
+mstrout
 Olivier
 Mengué
 dolmen
 Toby
 Inkster
-mail
+inkster
 lib
 Class
 Tiny

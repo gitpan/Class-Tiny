@@ -9,7 +9,6 @@ README
 dist.ini
 lib/Class/Tiny.pm
 perlcritic.rc
-t/00-compile.t
 t/00-report-prereqs.t
 t/alfa.t
 t/baker.t

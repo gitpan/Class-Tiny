@@ -13,9 +13,7 @@ my @modules = qw(
   Carp
   Exporter
   ExtUtils::MakeMaker
-  File::Find
   File::Spec::Functions
-  File::Temp
   List::Util
   Test::FailWarnings
   Test::More
