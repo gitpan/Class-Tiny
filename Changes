@@ -1,5 +1,12 @@
 Revision history for Class-Tiny
 
+0.005     2013-08-28 11:51:37 America/New_York
+
+    [ADDED]
+
+    - Attributes now support lazy defaults passed as a hash reference
+      to the class declaration
+
 0.004     2013-08-21 16:38:01 America/New_York
 
     [CHANGED]

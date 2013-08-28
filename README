@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.004
+    version 0.005
 
 SYNOPSIS
     In Person.pm:
@@ -18,7 +18,9 @@ SYNOPSIS
       package Employee;
       use parent 'Person';
 
-      use Class::Tiny qw( ssn );
+      use Class::Tiny qw( ssn ), {
+        timestamp => sub { time }   # attribute with default
+      };
 
       1;
 
@@ -39,6 +41,8 @@ DESCRIPTION
     *   defines attributes via import arguments
 
     *   generates read-write accessors
+
+    *   supports lazy attribute defaults
 
     *   supports custom accessors
 
@@ -74,6 +78,12 @@ DESCRIPTION
     creators I realized I could implement it exactly how I wanted faster
     than I could search CPAN for something merely sufficient.
 
+  Why this instead of Moose or Moo?
+    Moose and Moo are wonderful, but have a lot of dependencies. This
+    doesn't, which makes it great for core or fatpacking. That said,
+    Class::Tiny tries to follow similar conventions for things like "BUILD"
+    and "DEMOLISH" for some minimal interoperability.
+
 USAGE
   Defining attributes
     Define attributes as a list of import arguments:
@@ -87,14 +97,28 @@ USAGE
             weight
         );
 
-    For each item, a read-write accessor is created unless a subroutine of
-    that name already exists:
+    For each attribute, a read-write accessor is created unless a subroutine
+    of that name already exists:
 
         $obj->name;               # getter
         $obj->name( "John Doe" ); # setter
 
     Attribute names must be valid subroutine identifiers or an exception
     will be thrown.
+
+    You can specify lazy defaults by defining attributes with a hash
+    reference. Keys define attribute names and values are constants or code
+    references that will be evaluated when the attribute is first accessed
+    if no value has been set. The object is passed as an argument to a code
+    reference.
+
+        package Foo::WithDefaults;
+
+        use Class::Tiny qw/name id/, {
+            title     => 'Peon',
+            skills    => sub { [] },
+            hire_date => sub { $_[0]->_build_hire_date }, 
+        };
 
     To make your own custom accessors, just pre-declare the method name
     before loading Class::Tiny:
@@ -108,7 +132,8 @@ USAGE
         sub id { ... }
 
     By declaring "id" also with Class::Tiny, you include it in the list of
-    allowed constructor parameters.
+    known attributes for introspection. Default values will not be set for
+    custom accessors unless you handle that yourself.
 
   Class::Tiny::Object is your base class
     If your class does not already inherit from some class, then

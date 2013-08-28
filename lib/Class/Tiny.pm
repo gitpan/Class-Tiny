@@ -1,19 +1,16 @@
 use 5.008001;
 use strict;
+no strict 'refs';
 use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.004'; # VERSION
+our $VERSION = '0.005'; # VERSION
 
 use Carp ();
 
-if ( $] >= 5.010 ) {
-    require "mro.pm"; ## no critic: hack to hide from min version & prereq scanners
-}
-else {
-    require MRO::Compat;
-}
+# load as .pm to hide from min version scanners
+require( $] >= 5.010 ? "mro.pm" : "MRO/Compat.pm" ); ## no critic:
 
 my %CLASS_ATTRIBUTES;
 
@@ -22,34 +19,44 @@ sub import {
     my $pkg   = caller;
     $class->prepare_class($pkg);
     $class->create_attributes( $pkg, @_ );
-    return;
 }
 
 sub prepare_class {
-    no strict 'refs';
     my ( $class, $pkg ) = @_;
     @{"${pkg}::ISA"} = "Class::Tiny::Object" unless @{"${pkg}::ISA"};
-    return;
 }
 
 # adapted from Object::Tiny and Object::Tiny::RW
 sub create_attributes {
-    no strict 'refs';
-    my ( $class, $pkg, @attr ) = @_;
-    @attr = grep {
+    my ( $class, $pkg, @spec ) = @_;
+    my %defaults = map { ref $_ eq 'HASH' ? %$_ : ( $_ => undef ) } @spec;
+    my @attr = grep {
         defined and !ref and /^[^\W\d]\w*$/s
           or Carp::croak "Invalid accessor name '$_'"
-    } @attr;
-    $CLASS_ATTRIBUTES{$pkg}{$_} = undef for @attr;
+    } keys %defaults;
+    $CLASS_ATTRIBUTES{$pkg}{$_} = $defaults{$_} for @attr;
     #<<< No perltidy
     eval join "\n", ## no critic: intentionally eval'ing subs here
-      "package $pkg;",
+      "package $pkg;\n",
       map {
-        "sub $_ { return \@_ == 1 ? \$_[0]->{$_} : (\$_[0]->{$_} = \$_[1]) }\n"
+      <<CODE
+        sub $_ {
+            if ( \@_ == 1 ) {
+                if ( !exists \$_[0]{$_} && defined \$CLASS_ATTRIBUTES{'$pkg'}{$_} ) {
+                    \$_[0]{$_} = ref \$CLASS_ATTRIBUTES{'$pkg'}{$_} eq 'CODE' 
+                        ? \$CLASS_ATTRIBUTES{'$pkg'}{$_}->(\$_[0])
+                        : \$CLASS_ATTRIBUTES{'$pkg'}{$_};
+                }
+                return \$_[0]{$_};
+            }
+            else {
+                return \$_[0]{$_} = \$_[1];
+            }
+        }
+CODE
       } grep { ! *{"$pkg\::$_"}{CODE} } @attr;
     #>>>
-    Carp::croak("Failed to generate attributes for $pkg: @attr") if $@;
-    return;
+    Carp::croak("Failed to generate attributes for $pkg: $@\n") if $@;
 }
 
 sub get_all_attributes_for {
@@ -59,7 +66,7 @@ sub get_all_attributes_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.004'; # VERSION
+our $VERSION = '0.005'; # VERSION
 
 sub new {
     my $class = shift;
@@ -68,9 +75,7 @@ sub new {
     my $args;
     if ( @_ == 1 && ref $_[0] ) {
         my %copy = eval { %{ $_[0] } }; # try shallow copy
-        if ($@) {
-            Carp::croak("Argument to $class->new() could not be dereferenced as a hash");
-        }
+        Carp::croak("Argument to $class->new() could not be dereferenced as a hash") if $@;
         $args = \%copy;
     }
     elsif ( @_ % 2 == 0 ) {
@@ -84,7 +89,6 @@ sub new {
     my $self = bless {%$args}, $class;
     my @search = @{ mro::get_linear_isa($class) };
     for my $s ( reverse @search ) {
-        no strict 'refs';
         my $builder = *{ $s . "::BUILD" }{CODE};
         $self->$builder($args) if defined $builder;
     }
@@ -94,9 +98,7 @@ sub new {
     for my $k ( keys %$args ) {
         push( @bad, $k ) unless $self->can($k); # a heuristic to catch typos
     }
-    if (@bad) {
-        Carp::croak("Invalid attributes for $class: @bad");
-    }
+    Carp::croak("Invalid attributes for $class: @bad") if @bad;
 
     return $self;
 }
@@ -111,12 +113,10 @@ sub DESTROY {
       ? ${^GLOBAL_PHASE} eq 'DESTRUCT'
       : Devel::GlobalDestruction::in_global_destruction();
     for my $s ( @{ mro::get_linear_isa( ref $self ) } ) {
-        no strict 'refs';
         my $demolisher = *{ $s . "::DEMOLISH" }{CODE};
         next unless $demolisher;
         my $e = do {
-            local $?;
-            local $@;
+            local ( $?, $@ );
             eval { $self->$demolisher($in_global_destruction) };
             $@;
         };
@@ -142,7 +142,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -159,7 +159,9 @@ In F<Employee.pm>:
   package Employee;
   use parent 'Person';
 
-  use Class::Tiny qw( ssn );
+  use Class::Tiny qw( ssn ), {
+    timestamp => sub { time }   # attribute with default
+  };
 
   1;
 
@@ -187,6 +189,10 @@ defines attributes via import arguments
 =item *
 
 generates read-write accessors
+
+=item *
+
+supports lazy attribute defaults
 
 =item *
 
@@ -239,6 +245,13 @@ I looked for something like it on CPAN, but after checking a dozen class
 creators I realized I could implement it exactly how I wanted faster than I
 could search CPAN for something merely sufficient.
 
+=head2 Why this instead of Moose or Moo?
+
+L<Moose> and L<Moo> are wonderful, but have a lot of dependencies.  This
+doesn't, which makes it great for core or fatpacking.  That said, Class::Tiny
+tries to follow similar conventions for things like C<BUILD> and C<DEMOLISH>
+for some minimal interoperability.
+
 =for Pod::Coverage new get_all_attributes_for prepare_class create_attributes
 
 =head1 USAGE
@@ -256,7 +269,7 @@ Define attributes as a list of import arguments:
         weight
     );
 
-For each item, a read-write accessor is created unless a subroutine of that
+For each attribute, a read-write accessor is created unless a subroutine of that
 name already exists:
 
     $obj->name;               # getter
@@ -264,6 +277,19 @@ name already exists:
 
 Attribute names must be valid subroutine identifiers or an exception will
 be thrown.
+
+You can specify lazy defaults by defining attributes with a hash reference.
+Keys define attribute names and values are constants or code references that
+will be evaluated when the attribute is first accessed if no value has been
+set.  The object is passed as an argument to a code reference.
+
+    package Foo::WithDefaults;
+
+    use Class::Tiny qw/name id/, {
+        title     => 'Peon',
+        skills    => sub { [] },
+        hire_date => sub { $_[0]->_build_hire_date }, 
+    };
 
 To make your own custom accessors, just pre-declare the method name before
 loading Class::Tiny:
@@ -276,8 +302,9 @@ loading Class::Tiny:
 
     sub id { ... }
 
-By declaring C<id> also with Class::Tiny, you include it in the list
-of allowed constructor parameters.
+By declaring C<id> also with Class::Tiny, you include it in the list of known
+attributes for introspection.  Default values will not be set for custom
+accessors unless you handle that yourself.
 
 =head2 Class::Tiny::Object is your base class
 
