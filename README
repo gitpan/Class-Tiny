@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.005
+    version 0.006
 
 SYNOPSIS
     In Person.pm:
@@ -61,28 +61,6 @@ DESCRIPTION
     It uses no non-core modules for any recent Perl. On Perls older than
     v5.10 it requires MRO::Compat. On Perls older than v5.14, it requires
     Devel::GlobalDestruction.
-
-  Why this instead of Object::Tiny or Class::Accessor or something else?
-    I wanted something so simple that it could potentially be used by core
-    Perl modules I help maintain (or hope to write), most of which either
-    use Class::Struct or roll-their-own OO framework each time.
-
-    Object::Tiny and Object::Tiny::RW were close to what I wanted, but
-    lacking some features I deemed necessary, and their maintainers have an
-    even more strict philosophy against feature creep than I have.
-
-    Compared to everything else, this is smaller in implementation and
-    simpler in API. (The only API is a list of attributes!)
-
-    I looked for something like it on CPAN, but after checking a dozen class
-    creators I realized I could implement it exactly how I wanted faster
-    than I could search CPAN for something merely sufficient.
-
-  Why this instead of Moose or Moo?
-    Moose and Moo are wonderful, but have a lot of dependencies. This
-    doesn't, which makes it great for core or fatpacking. That said,
-    Class::Tiny tries to follow similar conventions for things like "BUILD"
-    and "DEMOLISH" for some minimal interoperability.
 
 USAGE
   Defining attributes
@@ -232,12 +210,56 @@ USAGE
     "get_all_attributes_for" class method.
 
         my @attrs = Class::Tiny->get_all_attributes_for("Employee");
-        # @attrs contains qw/name ssn/
+        # returns qw/name ssn timestamp/
+
+    Likewise, a hash reference of all valid attributes and default values
+    (or code references) may be retrieved with the
+    "get_all_attribute_defaults_for" class method. Any attributes without a
+    default will be "undef".
+
+        my $def = Class::Tiny->get_all_attribute_defaults_for("Employee");
+        # returns {
+        #   name => undef,
+        #   ssn => undef
+        #   timestamp => $coderef
+        # }
 
     The "import" method uses two class methods, "prepare_class" and
     "create_attributes" to set up the @ISA array and attributes. Anyone
     attempting to extend Class::Tiny itself should use these instead of
     mocking up a call to "import".
+
+RATIONALE
+  Why this instead of Object::Tiny or Class::Accessor or something else?
+    I wanted something so simple that it could potentially be used by core
+    Perl modules I help maintain (or hope to write), most of which either
+    use Class::Struct or roll-their-own OO framework each time.
+
+    Object::Tiny and Object::Tiny::RW were close to what I wanted, but
+    lacking some features I deemed necessary, and their maintainers have an
+    even more strict philosophy against feature creep than I have.
+
+    I looked for something like it on CPAN, but after checking a dozen class
+    creators I realized I could implement it exactly how I wanted faster
+    than I could search CPAN for something merely sufficient. Compared to
+    everything else, this is smaller in implementation and simpler in API.
+
+  Why this instead of Moose or Moo?
+    Moose and Moo are both excellent OO frameworks. Moose offers a powerful
+    meta-object protocol (MOP), but is slow to start up and has about 30
+    non-core dependencies including XS modules. Moo is faster to start up
+    and has about 10 pure Perl dependencies but provides no true MOP,
+    relying instead on its ability to transparently upgrade Moo to Moose
+    when Moose's full feature set is required.
+
+    By contrast, Class::Tiny has no MOP and has zero non-core dependencies
+    for Perls in the support window. It has far less code, less complexity
+    and no learning curve. If you don't need or can't afford what Moo or
+    Moose offer, this is a intended to be a reasonable fallback.
+
+    That said, Class::Tiny offers Moose-like conventions for things like
+    "BUILD" and "DEMOLISH" for some minimal interoperability and an easier
+    upgrade path.
 
 SUPPORT
   Bugs / Feature Requests
@@ -263,7 +285,7 @@ CONTRIBUTORS
 
     *   Olivier Mengué <dolmen@cpan.org>
 
-    *   Toby Inkster <inkster@cpan.org>
+    *   Toby Inkster <tobyink@cpan.org>
 
 COPYRIGHT AND LICENSE
     This software is Copyright (c) 2013 by David Golden.

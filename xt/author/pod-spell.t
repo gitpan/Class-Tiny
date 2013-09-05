@@ -26,7 +26,7 @@ Mengué
 dolmen
 Toby
 Inkster
-inkster
+tobyink
 lib
 Class
 Tiny

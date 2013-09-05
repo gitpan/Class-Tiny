@@ -1,5 +1,17 @@
 Revision history for Class-Tiny
 
+0.006     2013-09-05 11:56:48 America/New_York
+
+    [ADDED]
+
+    - added introspection method: get_all_attribute_defaults_for($class)
+
+    [DOCUMENTED]
+
+    - Fixed TOBYINK email address for contributors list
+
+    - Revised rationale for why Class::Tiny vs other modules
+
 0.005     2013-08-28 11:51:37 America/New_York
 
     [ADDED]
@@ -26,7 +38,7 @@ Revision history for Class-Tiny
 
     [ADDED]
 
-    - added introspection method: get_all_attributes_for( $class)
+    - added introspection method: get_all_attributes_for($class)
 
     [INTERNAL]
 

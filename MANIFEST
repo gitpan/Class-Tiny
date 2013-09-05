@@ -9,6 +9,7 @@ README
 dist.ini
 lib/Class/Tiny.pm
 perlcritic.rc
+t/00-compile.t
 t/00-report-prereqs.t
 t/alfa.t
 t/baker.t
@@ -17,6 +18,7 @@ t/delta.t
 t/echo.t
 t/foxtrot.t
 t/golf.t
+t/hotel.t
 t/lib/Alfa.pm
 t/lib/Baker.pm
 t/lib/Charlie.pm
@@ -24,6 +26,7 @@ t/lib/Delta.pm
 t/lib/Echo.pm
 t/lib/Foxtrot.pm
 t/lib/Golf.pm
+t/lib/Hotel.pm
 t/lib/TestUtils.pm
 tidyall.ini
 xt/author/critic.t
