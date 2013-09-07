@@ -1,5 +1,18 @@
 Revision history for Class-Tiny
 
+0.007     2013-09-07 16:48:56 America/New_York
+
+    [OPTIMIZED]
+
+    - accessors without defaults are now much faster (comparable
+      to Class::Accessor::Fast)
+
+    - constructor and destructors are slightly faster when there
+      are no superclasses except Class::Tiny::Object
+
+    - linearized @ISA and other items are cached for speed when
+      the first object is created
+
 0.006     2013-09-05 11:56:48 America/New_York
 
     [ADDED]

@@ -68,26 +68,26 @@
    "provides" : {
       "Class::Tiny" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       },
       "Class::Tiny::Object" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       }
    },
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/dagolden/class-tiny/issues"
+         "web" : "https://github.com/dagolden/Class-Tiny/issues"
       },
-      "homepage" : "https://metacpan.org/release/Class-Tiny",
+      "homepage" : "https://github.com/dagolden/Class-Tiny",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/dagolden/class-tiny.git",
-         "web" : "https://github.com/dagolden/class-tiny"
+         "url" : "https://github.com/dagolden/Class-Tiny.git",
+         "web" : "https://github.com/dagolden/Class-Tiny"
       }
    },
-   "version" : "0.006",
+   "version" : "0.007",
    "x_authority" : "cpan:DAGOLDEN",
    "x_contributors" : [
       "Karen Etheridge <ether@cpan.org>",

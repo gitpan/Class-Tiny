@@ -5,7 +5,7 @@ use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
 
 use Carp ();
 
@@ -35,27 +35,24 @@ sub create_attributes {
           or Carp::croak "Invalid accessor name '$_'"
     } keys %defaults;
     $CLASS_ATTRIBUTES{$pkg}{$_} = $defaults{$_} for @attr;
-    #<<< No perltidy
-    eval join "\n", ## no critic: intentionally eval'ing subs here
-      "package $pkg;\n",
-      map {
-      <<CODE
-        sub $_ {
-            if ( \@_ == 1 ) {
-                if ( !exists \$_[0]{$_} && defined \$CLASS_ATTRIBUTES{'$pkg'}{$_} ) {
-                    \$_[0]{$_} = ref \$CLASS_ATTRIBUTES{'$pkg'}{$_} eq 'CODE' 
-                        ? \$CLASS_ATTRIBUTES{'$pkg'}{$_}->(\$_[0])
-                        : \$CLASS_ATTRIBUTES{'$pkg'}{$_};
-                }
-                return \$_[0]{$_};
-            }
-            else {
-                return \$_[0]{$_} = \$_[1];
-            }
-        }
-CODE
-      } grep { ! *{"$pkg\::$_"}{CODE} } @attr;
-    #>>>
+    _gen_accessor( $pkg, $_ ) for grep { !*{"$pkg\::$_"}{CODE} } @attr;
+    Carp::croak("Failed to generate attributes for $pkg: $@\n") if $@;
+}
+
+sub _gen_accessor {
+    my ( $pkg, $name ) = @_;
+    my $default = $CLASS_ATTRIBUTES{$pkg}{$name};
+
+    my $sub = "sub $name { if (\@_ == 1) {";
+    if ( defined $default && ref $default eq 'CODE' ) {
+        $sub .= "if ( !exists \$_[0]{$name} ) { \$_[0]{$name} = \$default->(\$_[0]) }";
+    }
+    elsif ( defined $default ) {
+        $sub .= "if ( !exists \$_[0]{$name} ) { \$_[0]{$name} = \$default }";
+    }
+    $sub .= "return \$_[0]{$name} } else { return \$_[0]{$name}=\$_[1] } }";
+
+    eval "package $pkg; $sub"; ## no critic
     Carp::croak("Failed to generate attributes for $pkg: $@\n") if $@;
 }
 
@@ -80,7 +77,12 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.006'; # VERSION
+our $VERSION = '0.007'; # VERSION
+
+my %CAN_CACHE;
+my %LINEAR_ISA_CACHE;
+my %DEMOLISH_CACHE;
+my %BUILD_CACHE;
 
 sub new {
     my $class = shift;
@@ -101,16 +103,21 @@ sub new {
 
     # create object and invoke BUILD
     my $self = bless {%$args}, $class;
-    my @search = @{ mro::get_linear_isa($class) };
-    for my $s ( reverse @search ) {
-        my $builder = *{ $s . "::BUILD" }{CODE};
-        $self->$builder($args) if defined $builder;
+    my $linear_isa = $LINEAR_ISA_CACHE{$class} ||=
+      @{"$class\::ISA"} == 1 && ${"$class\::ISA"}[0] eq "Class::Tiny::Object"
+      ? [$class]
+      : mro::get_linear_isa($class);
+
+    for my $s ( reverse @$linear_isa ) {
+        my $builder = $BUILD_CACHE{$s} ||= *{"$s\::BUILD"}{CODE};
+        $builder->( $self, $args ) if $builder;
     }
 
     # unknown attributes still in $args are fatal
     my @bad;
     for my $k ( keys %$args ) {
-        push( @bad, $k ) unless $self->can($k); # a heuristic to catch typos
+        push( @bad, $k )
+          unless $CAN_CACHE{$class}{$k} ||= $self->can($k); # a heuristic to catch typos
     }
     Carp::croak("Invalid attributes for $class: @bad") if @bad;
 
@@ -121,17 +128,18 @@ sub new {
 require Devel::GlobalDestruction unless defined ${^GLOBAL_PHASE};
 
 sub DESTROY {
-    my $self = shift;
+    my $self  = shift;
+    my $class = ref $self;
     my $in_global_destruction =
       defined ${^GLOBAL_PHASE}
       ? ${^GLOBAL_PHASE} eq 'DESTRUCT'
       : Devel::GlobalDestruction::in_global_destruction();
-    for my $s ( @{ mro::get_linear_isa( ref $self ) } ) {
-        my $demolisher = *{ $s . "::DEMOLISH" }{CODE};
+    for my $s ( @{ $LINEAR_ISA_CACHE{$class} } ) {
+        my $demolisher = $DEMOLISH_CACHE{$s} ||= *{"$s\::DEMOLISH"}{CODE};
         next unless $demolisher;
         my $e = do {
             local ( $?, $@ );
-            eval { $self->$demolisher($in_global_destruction) };
+            eval { $demolisher->( $self, $in_global_destruction ) };
             $@;
         };
         no warnings 'misc'; # avoid (in cleanup) warnings
@@ -156,7 +164,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
@@ -416,6 +424,11 @@ C<create_attributes> to set up the C<@ISA> array and attributes.  Anyone
 attempting to extend Class::Tiny itself should use these instead of mocking up
 a call to C<import>.
 
+When the first object is created, linearized C<@ISA> and various subroutines
+references are cached for speed.  Ensure that all inheritance and methods are
+in place before creating objects. (You don't want to be changing that once you
+create objects anyway, right?)
+
 =head1 RATIONALE
 
 =head2 Why this instead of Object::Tiny or Class::Accessor or something else?
@@ -457,7 +470,7 @@ and C<DEMOLISH> for some minimal interoperability and an easier upgrade path.
 =head2 Bugs / Feature Requests
 
 Please report any bugs or feature requests through the issue tracker
-at L<https://github.com/dagolden/class-tiny/issues>.
+at L<https://github.com/dagolden/Class-Tiny/issues>.
 You will be notified automatically of any progress on your issue.
 
 =head2 Source Code
@@ -465,9 +478,9 @@ You will be notified automatically of any progress on your issue.
 This is open source software.  The code repository is available for
 public review and contribution under the terms of the license.
 
-L<https://github.com/dagolden/class-tiny>
+L<https://github.com/dagolden/Class-Tiny>
 
-  git clone git://github.com/dagolden/class-tiny.git
+  git clone https://github.com/dagolden/Class-Tiny.git
 
 =head1 AUTHOR
 

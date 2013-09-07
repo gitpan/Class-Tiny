@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.006
+    version 0.007
 
 SYNOPSIS
     In Person.pm:
@@ -229,6 +229,11 @@ USAGE
     attempting to extend Class::Tiny itself should use these instead of
     mocking up a call to "import".
 
+    When the first object is created, linearized @ISA and various
+    subroutines references are cached for speed. Ensure that all inheritance
+    and methods are in place before creating objects. (You don't want to be
+    changing that once you create objects anyway, right?)
+
 RATIONALE
   Why this instead of Object::Tiny or Class::Accessor or something else?
     I wanted something so simple that it could potentially be used by core
@@ -264,16 +269,16 @@ RATIONALE
 SUPPORT
   Bugs / Feature Requests
     Please report any bugs or feature requests through the issue tracker at
-    <https://github.com/dagolden/class-tiny/issues>. You will be notified
+    <https://github.com/dagolden/Class-Tiny/issues>. You will be notified
     automatically of any progress on your issue.
 
   Source Code
     This is open source software. The code repository is available for
     public review and contribution under the terms of the license.
 
-    <https://github.com/dagolden/class-tiny>
+    <https://github.com/dagolden/Class-Tiny>
 
-      git clone git://github.com/dagolden/class-tiny.git
+      git clone https://github.com/dagolden/Class-Tiny.git
 
 AUTHOR
     David Golden <dagolden@cpan.org>

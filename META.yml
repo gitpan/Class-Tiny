@@ -34,20 +34,20 @@ no_index:
 provides:
   Class::Tiny:
     file: lib/Class/Tiny.pm
-    version: 0.006
+    version: 0.007
   Class::Tiny::Object:
     file: lib/Class/Tiny.pm
-    version: 0.006
+    version: 0.007
 requires:
   Carp: 0
   perl: 5.008001
   strict: 0
   warnings: 0
 resources:
-  bugtracker: https://github.com/dagolden/class-tiny/issues
-  homepage: https://metacpan.org/release/Class-Tiny
-  repository: git://github.com/dagolden/class-tiny.git
-version: 0.006
+  bugtracker: https://github.com/dagolden/Class-Tiny/issues
+  homepage: https://github.com/dagolden/Class-Tiny
+  repository: https://github.com/dagolden/Class-Tiny.git
+version: 0.007
 x_authority: cpan:DAGOLDEN
 x_contributors:
   - 'Karen Etheridge <ether@cpan.org>'
