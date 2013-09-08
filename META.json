@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Dist::Zilla version 4.300037, CPAN::Meta::Converter version 2.132140",
+   "generated_by" : "Dist::Zilla version 4.300038, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "apache_2_0"
    ],
@@ -68,11 +68,11 @@
    "provides" : {
       "Class::Tiny" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.007"
+         "version" : "0.008"
       },
       "Class::Tiny::Object" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.007"
+         "version" : "0.008"
       }
    },
    "release_status" : "stable",
@@ -87,7 +87,7 @@
          "web" : "https://github.com/dagolden/Class-Tiny"
       }
    },
-   "version" : "0.007",
+   "version" : "0.008",
    "x_authority" : "cpan:DAGOLDEN",
    "x_contributors" : [
       "Karen Etheridge <ether@cpan.org>",

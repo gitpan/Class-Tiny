@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.007
+    version 0.008
 
 SYNOPSIS
     In Person.pm:
@@ -35,7 +35,7 @@ SYNOPSIS
       die "Error creating Employee: $@" if $@;
 
 DESCRIPTION
-    This module offers a minimalist class construction kit in around 100
+    This module offers a minimalist class construction kit in around 120
     lines of code. Here is a list of features:
 
     *   defines attributes via import arguments
