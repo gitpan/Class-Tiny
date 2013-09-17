@@ -5,7 +5,7 @@ use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.008'; # VERSION
+our $VERSION = '0.009'; # VERSION
 
 use Carp ();
 
@@ -41,18 +41,19 @@ sub create_attributes {
 
 sub _gen_accessor {
     my ( $pkg, $name ) = @_;
-    my $default = $CLASS_ATTRIBUTES{$pkg}{$name};
+    my $outer_default = $CLASS_ATTRIBUTES{$pkg}{$name};
 
     my $sub = "sub $name { if (\@_ == 1) {";
-    if ( defined $default && ref $default eq 'CODE' ) {
+    if ( defined $outer_default && ref $outer_default eq 'CODE' ) {
         $sub .= "if ( !exists \$_[0]{$name} ) { \$_[0]{$name} = \$default->(\$_[0]) }";
     }
-    elsif ( defined $default ) {
+    elsif ( defined $outer_default ) {
         $sub .= "if ( !exists \$_[0]{$name} ) { \$_[0]{$name} = \$default }";
     }
     $sub .= "return \$_[0]{$name} } else { return \$_[0]{$name}=\$_[1] } }";
 
-    eval "package $pkg; $sub"; ## no critic
+    # default = outer_default avoids "won't stay shared" bug
+    eval "package $pkg; my \$default=\$outer_default; $sub"; ## no critic
     Carp::croak("Failed to generate attributes for $pkg: $@\n") if $@;
 }
 
@@ -77,7 +78,7 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.008'; # VERSION
+our $VERSION = '0.009'; # VERSION
 
 my ( %LINEAR_ISA_CACHE, %BUILD_CACHE, %DEMOLISH_CACHE, %CAN_CACHE );
 
@@ -169,7 +170,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 
