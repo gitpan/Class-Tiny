@@ -1,5 +1,11 @@
 Revision history for Class-Tiny
 
+0.010     2013-09-18 13:23:15 America/New_York
+
+    [FIXED]
+
+    - suppressed 'used only once' warnings (GH #9)
+
 0.009     2013-09-17 06:54:47 America/New_York
 
     [FIXED]

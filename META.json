@@ -68,11 +68,11 @@
    "provides" : {
       "Class::Tiny" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       },
       "Class::Tiny::Object" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.009"
+         "version" : "0.010"
       }
    },
    "release_status" : "stable",
@@ -87,7 +87,7 @@
          "web" : "https://github.com/dagolden/Class-Tiny"
       }
    },
-   "version" : "0.009",
+   "version" : "0.010",
    "x_authority" : "cpan:DAGOLDEN",
    "x_contributors" : [
       "Karen Etheridge <ether@cpan.org>",
