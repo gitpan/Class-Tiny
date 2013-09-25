@@ -13,6 +13,7 @@ my @modules = qw(
   Carp
   Exporter
   ExtUtils::MakeMaker
+  File::Spec
   File::Spec::Functions
   File::Temp
   IO::Handle

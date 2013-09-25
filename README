@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.010
+    version 0.011
 
 SYNOPSIS
     In Person.pm:

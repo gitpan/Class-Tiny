@@ -6,7 +6,7 @@ no warnings 'once';
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.010'; # VERSION
+our $VERSION = '0.011'; # VERSION
 
 use Carp ();
 
@@ -79,7 +79,7 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.010'; # VERSION
+our $VERSION = '0.011'; # VERSION
 
 my ( %LINEAR_ISA_CACHE, %BUILD_CACHE, %DEMOLISH_CACHE, %CAN_CACHE );
 
@@ -171,7 +171,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 

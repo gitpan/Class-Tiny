@@ -1,5 +1,15 @@
 Revision history for Class-Tiny
 
+0.011     2013-09-25 11:08:07 America/New_York
+
+    [FIXED]
+
+    - compile test could hang on Windows
+
+    [PREREQS]
+
+    - ExtUtils::MakeMaker configure_requires dropped to 6.17
+
 0.010     2013-09-18 13:23:15 America/New_York
 
     [FIXED]
