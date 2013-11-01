@@ -6,7 +6,7 @@ no warnings 'once';
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.011'; # VERSION
+our $VERSION = '0.012'; # VERSION
 
 use Carp ();
 
@@ -79,7 +79,7 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.011'; # VERSION
+our $VERSION = '0.012'; # VERSION
 
 my ( %LINEAR_ISA_CACHE, %BUILD_CACHE, %DEMOLISH_CACHE, %CAN_CACHE );
 
@@ -163,7 +163,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -171,7 +171,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =head1 SYNOPSIS
 
@@ -253,12 +253,12 @@ C<DESTROY> calls C<DEMOLISH> for each class from child to parent
 
 =back
 
+Multiple-inheritance is possible, with superclass order determined via
+L<mro::get_linear_isa|mro/Functions>.
+
 It uses no non-core modules for any recent Perl. On Perls older than v5.10 it
 requires L<MRO::Compat>. On Perls older than v5.14, it requires
 L<Devel::GlobalDestruction>.
-
-=for Pod::Coverage new get_all_attributes_for get_all_attribute_defaults_for
-prepare_class create_attributes
 
 =head1 USAGE
 
@@ -296,6 +296,10 @@ set.  The object is passed as an argument to a code reference.
         skills    => sub { [] },
         hire_date => sub { $_[0]->_build_hire_date }, 
     };
+
+When subclassing, if multiple accessors of the same name exist in different
+classes, any default (or lack of default) is determined by standard
+method resolution order.
 
 To make your own custom accessors, just pre-declare the method name before
 loading Class::Tiny:
@@ -436,6 +440,9 @@ references are cached for speed.  Ensure that all inheritance and methods are
 in place before creating objects. (You don't want to be changing that once you
 create objects anyway, right?)
 
+=for Pod::Coverage new get_all_attributes_for get_all_attribute_defaults_for
+prepare_class create_attributes
+
 =head1 RATIONALE
 
 =head2 Why this instead of Object::Tiny or Class::Accessor or something else?
@@ -499,6 +506,10 @@ David Golden <dagolden@cpan.org>
 
 =item *
 
+Gelu Lupas <gelu@devnull.ro>
+
+=item *
+
 Karen Etheridge <ether@cpan.org>
 
 =item *
@@ -507,7 +518,7 @@ Matt S Trout <mstrout@cpan.org>
 
 =item *
 
-Olivier Mengué <dolmen@cpan.org>
+Olivier MenguÃ© <dolmen@cpan.org>
 
 =item *
 

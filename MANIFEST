@@ -10,7 +10,6 @@ cpanfile
 dist.ini
 lib/Class/Tiny.pm
 perlcritic.rc
-t/00-compile.t
 t/00-report-prereqs.t
 t/alfa.t
 t/baker.t
@@ -20,6 +19,7 @@ t/echo.t
 t/foxtrot.t
 t/golf.t
 t/hotel.t
+t/juliett.t
 t/lib/Alfa.pm
 t/lib/Baker.pm
 t/lib/Charlie.pm
@@ -28,8 +28,11 @@ t/lib/Echo.pm
 t/lib/Foxtrot.pm
 t/lib/Golf.pm
 t/lib/Hotel.pm
+t/lib/India.pm
+t/lib/Juliett.pm
 t/lib/TestUtils.pm
 tidyall.ini
+xt/author/00-compile.t
 xt/author/critic.t
 xt/author/pod-spell.t
 xt/release/distmeta.t

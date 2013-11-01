@@ -1,5 +1,16 @@
 Revision history for Class-Tiny
 
+0.012     2013-11-01 16:36:35 America/New_York
+
+    [DOCUMENTED]
+
+    - added documentation notes about multiple inheritance
+      and attribute defaults under subclassing
+
+    [INTERNAL]
+
+    - added tests for multiple inheritance
+
 0.011     2013-09-25 11:08:07 America/New_York
 
     [FIXED]

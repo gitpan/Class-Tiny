@@ -17,6 +17,9 @@ linearized
 David
 Golden
 dagolden
+Gelu
+Lupas
+gelu
 Karen
 Etheridge
 ether
@@ -24,7 +27,7 @@ Matt
 Trout
 mstrout
 Olivier
-Mengué
+MenguÃ©
 dolmen
 Toby
 Inkster
