@@ -4,7 +4,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Dist::Zilla version 5.003, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830",
    "license" : [
       "apache_2_0"
    ],
@@ -32,6 +32,12 @@
       },
       "develop" : {
          "requires" : {
+            "Dist::Zilla" : "5.006",
+            "Dist::Zilla::Plugin::OnlyCorePrereqs" : "0.003",
+            "Dist::Zilla::Plugin::PerlVersionPrereqs" : "0",
+            "Dist::Zilla::Plugin::Prereqs" : "0",
+            "Dist::Zilla::Plugin::RemovePrereqs" : "0",
+            "Dist::Zilla::PluginBundle::DAGOLDEN" : "0.052",
             "File::Spec" : "0",
             "File::Temp" : "0",
             "IO::Handle" : "0",
@@ -72,11 +78,11 @@
    "provides" : {
       "Class::Tiny" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.012"
+         "version" : "0.013"
       },
       "Class::Tiny::Object" : {
          "file" : "lib/Class/Tiny.pm",
-         "version" : "0.012"
+         "version" : "0.013"
       }
    },
    "release_status" : "stable",
@@ -91,7 +97,7 @@
          "web" : "https://github.com/dagolden/Class-Tiny"
       }
    },
-   "version" : "0.012",
+   "version" : "0.013",
    "x_authority" : "cpan:DAGOLDEN",
    "x_contributors" : [
       "Gelu Lupas <gelu@devnull.ro>",

@@ -1,5 +1,11 @@
 Revision history for Class-Tiny
 
+0.013     2013-11-26 12:01:13 America/New_York
+
+    [DOCUMENTED]
+
+    - expanded comparision to Object::Tiny and Class::Accessor
+
 0.012     2013-11-01 16:36:35 America/New_York
 
     [DOCUMENTED]
