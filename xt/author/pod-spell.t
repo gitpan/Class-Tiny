@@ -17,6 +17,10 @@ linearized
 David
 Golden
 dagolden
+Dagfinn
+Ilmari
+Mannsåker
+ilmari
 Gelu
 Lupas
 gelu

@@ -5,7 +5,7 @@ use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.013'; # VERSION
+our $VERSION = '0.014'; # VERSION
 
 use Carp ();
 
@@ -78,7 +78,7 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.013'; # VERSION
+our $VERSION = '0.014'; # VERSION
 
 my ( %LINEAR_ISA_CACHE, %BUILD_CACHE, %DEMOLISH_CACHE, %CAN_CACHE );
 
@@ -89,6 +89,7 @@ my $_PRECACHE = sub {
       ? [$class]
       : mro::get_linear_isa($class);
     for my $s ( @{ $LINEAR_ISA_CACHE{$class} } ) {
+        no warnings 'once'; # needed to avoid downstream warnings
         $BUILD_CACHE{$s}    = *{"$s\::BUILD"}{CODE};
         $DEMOLISH_CACHE{$s} = *{"$s\::DEMOLISH"}{CODE};
     }
@@ -170,7 +171,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =head1 SYNOPSIS
 
@@ -523,6 +524,10 @@ David Golden <dagolden@cpan.org>
 =head1 CONTRIBUTORS
 
 =over 4
+
+=item *
+
+Dagfinn Ilmari Mannsåker <ilmari@ilmari.org>
 
 =item *
 

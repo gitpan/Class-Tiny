@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.013
+    version 0.014
 
 SYNOPSIS
     In Person.pm:
@@ -312,6 +312,8 @@ AUTHOR
     David Golden <dagolden@cpan.org>
 
 CONTRIBUTORS
+    *   Dagfinn Ilmari Mannsåker <ilmari@ilmari.org>
+
     *   Gelu Lupas <gelu@devnull.ro>
 
     *   Karen Etheridge <ether@cpan.org>
