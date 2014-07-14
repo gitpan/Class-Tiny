@@ -2,7 +2,7 @@ NAME
     Class::Tiny - Minimalist class construction
 
 VERSION
-    version 0.014
+    version 0.015
 
 SYNOPSIS
     In Person.pm:
@@ -157,7 +157,7 @@ USAGE
     of the reference provided.
 
     In order to help catch typos in constructor arguments, any argument that
-    it is not also a valid method (e.g. an accessor or other method) will
+    is not also a valid method (e.g. an accessor or other method) will
     result in a fatal exception. This is not perfect, but should catch
     typical transposition typos. Also see "BUILD" for how to explicitly hide
     non-attribute, non-method arguments if desired.

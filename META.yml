@@ -3,22 +3,23 @@ abstract: 'Minimalist class construction'
 author:
   - 'David Golden <dagolden@cpan.org>'
 build_requires:
-  Exporter: 0
-  ExtUtils::MakeMaker: 0
-  File::Spec::Functions: 0
-  List::Util: 0
-  Test::More: 0.96
-  base: 0
-  lib: 0
-  subs: 0
+  Exporter: '0'
+  ExtUtils::MakeMaker: '0'
+  File::Spec::Functions: '0'
+  List::Util: '0'
+  Test::More: '0.96'
+  base: '0'
+  lib: '0'
+  subs: '0'
+  version: '0'
 configure_requires:
-  ExtUtils::MakeMaker: 6.17
+  ExtUtils::MakeMaker: '6.17'
 dynamic_config: 1
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.141170'
 license: apache
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Class-Tiny
 no_index:
   directory:
@@ -31,20 +32,20 @@ no_index:
 provides:
   Class::Tiny:
     file: lib/Class/Tiny.pm
-    version: 0.014
+    version: '0.015'
   Class::Tiny::Object:
     file: lib/Class/Tiny.pm
-    version: 0.014
+    version: '0.015'
 requires:
-  Carp: 0
-  perl: 5.008001
-  strict: 0
-  warnings: 0
+  Carp: '0'
+  perl: '5.006'
+  strict: '0'
+  warnings: '0'
 resources:
   bugtracker: https://github.com/dagolden/Class-Tiny/issues
   homepage: https://github.com/dagolden/Class-Tiny
   repository: https://github.com/dagolden/Class-Tiny.git
-version: 0.014
+version: '0.015'
 x_authority: cpan:DAGOLDEN
 x_contributors:
   - 'Dagfinn Ilmari Mannsåker <ilmari@ilmari.org>'

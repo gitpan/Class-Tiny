@@ -1,11 +1,11 @@
-use 5.008001;
+use 5.006;
 use strict;
 no strict 'refs';
 use warnings;
 
 package Class::Tiny;
 # ABSTRACT: Minimalist class construction
-our $VERSION = '0.014'; # VERSION
+our $VERSION = '0.015'; # VERSION
 
 use Carp ();
 
@@ -78,7 +78,7 @@ sub get_all_attribute_defaults_for {
 
 package Class::Tiny::Object;
 # ABSTRACT: Base class for classes built with Class::Tiny
-our $VERSION = '0.014'; # VERSION
+our $VERSION = '0.015'; # VERSION
 
 my ( %LINEAR_ISA_CACHE, %BUILD_CACHE, %DEMOLISH_CACHE, %CAN_CACHE );
 
@@ -171,7 +171,7 @@ Class::Tiny - Minimalist class construction
 
 =head1 VERSION
 
-version 0.014
+version 0.015
 
 =head1 SYNOPSIS
 
@@ -353,7 +353,7 @@ If a reference is passed as a single argument, it must be able to be
 dereferenced as a hash or an exception is thrown.  A shallow copy is made of
 the reference provided.
 
-In order to help catch typos in constructor arguments, any argument that it is
+In order to help catch typos in constructor arguments, any argument that is
 not also a valid method (e.g. an accessor or other method) will result in a
 fatal exception.  This is not perfect, but should catch typical transposition
 typos. Also see L</BUILD> for how to explicitly hide non-attribute, non-method
