@@ -74,17 +74,6 @@ subtest "attributes are RW" => sub {
     is( $obj->kit,     31, "accessing kit rerutns changed value" );
 };
 
-subtest "exceptions" => sub {
-    like(
-        exception {
-            Juliett->new( foo => 23, bar => 42, baz => 13, qux => 11, kit => 31, wibble => 0 );
-        },
-        qr/Invalid attributes for Juliett: wibble/,
-        "creating object with 'wibble' dies",
-    );
-
-};
-
 done_testing;
 #
 # This file is part of Class-Tiny

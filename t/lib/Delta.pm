@@ -4,7 +4,7 @@ use warnings;
 
 package Delta;
 
-our $counter = 0;
+our $counter   = 0;
 our $exception = 0;
 
 use Carp ();
@@ -19,13 +19,11 @@ sub BUILD {
 
     $self->bar(42) unless defined $self->bar;
     $counter++;
-
-    delete $args->{hide_me};
 }
 
 sub DEMOLISH {
     my $self = shift;
-    $counter--;
+    $counter--   if $counter > 0;
     $exception++ if keys %$self > 2; # Echo will delete first
 }
 
